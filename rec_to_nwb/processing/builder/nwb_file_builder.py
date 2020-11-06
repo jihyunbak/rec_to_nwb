@@ -88,6 +88,7 @@ class NWBFileBuilder:
             process_mda: bool = True,
             process_analog: bool = True,
             process_pos_timestamps: bool = True,
+            preprocessing_path: str = '',
             video_path: str = '',
             output_file: str = 'output.nwb',
             reconfig_header: str = ''
@@ -127,6 +128,10 @@ class NWBFileBuilder:
         self.process_mda = process_mda
         self.process_analog = process_analog
         self.process_pos_timestamps = process_pos_timestamps
+        if not preprocessing_path:
+            self.preprocessing_path = data_path
+        else:
+            self.preprocessing_path = preprocessing_path
         self.output_file = output_file
         self.video_path = video_path
         self.link_to_notes = self.metadata.get('link to notes', None)

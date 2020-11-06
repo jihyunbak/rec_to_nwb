@@ -70,6 +70,7 @@ class RawToNWBBuilder:
             nwb_metadata: MetadataManager,
             output_path: str = '',
             video_path: str = '',
+            preprocessing_path: str = '',
             extract_analog: bool = True,
             extract_spikes: bool = False,
             extract_lfps: bool = False,
@@ -110,6 +111,10 @@ class RawToNWBBuilder:
         self.metadata = nwb_metadata.metadata
         self.output_path = output_path
         self.video_path = video_path
+        if not preprocessing_path:
+            self.preprocessing_path = data_path
+        else:
+            self.preprocessing_path = preprocessing_path
         self.probes = nwb_metadata.probes
         self.nwb_metadata = nwb_metadata
         self.parallel_instances = parallel_instances
@@ -160,6 +165,7 @@ class RawToNWBBuilder:
                 process_mda=self.extract_mda,
                 process_dio=self.extract_dio,
                 process_analog=self.extract_analog,
+                preprocessing_path=self.preprocessing_path,
                 video_path=self.video_path,
                 reconfig_header=self.__get_header_path()
                 #reconfig_header=self.__is_rec_config_valid()
