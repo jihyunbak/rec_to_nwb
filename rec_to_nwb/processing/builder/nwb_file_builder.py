@@ -159,9 +159,10 @@ class NWBFileBuilder:
             self.header = Header(reconfig_header)
         else:
             self.header = Header(header_file)
-        self.data_scanner = DataScanner(data_path, animal_name, nwb_metadata)
+        self.data_scanner = DataScanner(self.preprocessing_path, animal_name, nwb_metadata)
         self.dataset_names = self.data_scanner.get_all_epochs(date)
-        full_data_path = data_path + '/' + animal_name + '/preprocessing/' + date
+        full_data_path = os.path.join(self.preprocessing_path, 
+                                    animal_name + '/preprocessing/' + date)
 
         validation_registrator = ValidationRegistrator()
         validation_registrator.register(NTrodeValidator(self.metadata, self.header, self.probes))

@@ -207,6 +207,7 @@ class RawToNWBBuilder:
         extract_trodes_rec_file(
             self.data_path,
             self.animal_name,
+            out_dir=self.preprocessing_path,
             parallel_instances=self.parallel_instances,
             extract_analog=self.extract_analog,
             extract_dio=self.extract_dio,
@@ -248,7 +249,7 @@ class RawToNWBBuilder:
     def cleanup(self):
         """Remove all temporary files structure from preprocessing folder"""
 
-        preprocessing = self.data_path + '/' + self.animal_name + '/preprocessing'
+        preprocessing = self.preprocessing_path + '/' + self.animal_name + '/preprocessing'
         if os.path.exists(preprocessing):
             shutil.rmtree(preprocessing)
 
