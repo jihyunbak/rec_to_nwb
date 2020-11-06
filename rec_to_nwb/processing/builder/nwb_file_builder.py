@@ -148,7 +148,13 @@ class NWBFileBuilder:
                   + self.date)
         )
 
-        header_file = HeaderProcessor.process_headers(rec_files_list)
+        if not preprocessing_path:
+            header_path = None # default
+        else:
+            header_path = (self.preprocessing_path
+                            + '/' + self.animal_name + '/headers/' + self.date)
+            os.makedirs(header_path, exist_ok=True)
+        header_file = HeaderProcessor.process_headers(rec_files_list, copy_dir=header_path)
         if reconfig_header:
             self.header = Header(reconfig_header)
         else:
