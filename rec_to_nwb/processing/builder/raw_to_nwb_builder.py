@@ -208,6 +208,7 @@ class RawToNWBBuilder:
             self.data_path,
             self.animal_name,
             out_dir=self.preprocessing_path,
+            dates=self.dates,
             parallel_instances=self.parallel_instances,
             extract_analog=self.extract_analog,
             extract_dio=self.extract_dio,
