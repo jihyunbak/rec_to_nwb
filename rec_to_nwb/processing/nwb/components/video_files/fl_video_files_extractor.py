@@ -1,3 +1,5 @@
+import os
+import warnings
 import numpy as np
 from rec_to_binaries.read_binaries import readTrodesExtractedDataFile
 
@@ -15,13 +17,22 @@ class FlVideoFilesExtractor:
         video_files = self.video_files_metadata
         extracted_video_files = []
         for video_file in video_files:
+            try:
+                hw_file = os.path.join(self.raw_data_path,
+                    video_file["name"][:-4] + "videoTimeStamps.cameraHWSync")
+                timestamps = self.convert_timestamps(
+                    readTrodesExtractedDataFile(hw_file)["data"])
+            except FileNotFoundError:
+                warnings.warn('Cannot find file {}'.format(hw_file))
+                timestamps = np.ndarray([0])
             new_fl_video_file = {
                 "name": video_file["name"],
-                "timestamps": self.convert_timestamps(readTrodesExtractedDataFile(
-                    self.raw_data_path + "/"
-                    + video_file["name"][:-4]
-                    + "videoTimeStamps.cameraHWSync"
-                )["data"]),
+                "timestamps": timestamps,
+                # "timestamps": self.convert_timestamps(readTrodesExtractedDataFile(
+                #     self.raw_data_path + "/"
+                #     + video_file["name"][:-4]
+                #     + "videoTimeStamps.cameraHWSync"
+                # )["data"]),
                 "device": video_file["camera_id"]
             }
             extracted_video_files.append(new_fl_video_file)
