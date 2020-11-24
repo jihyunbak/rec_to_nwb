@@ -37,6 +37,8 @@ class CameraSampleFrameCountsExtractor:
                   )["data"]
         camera_sample_frame_counts = np.ndarray(shape = (len(content), 2), dtype='uint32')
         for i, record in enumerate(content):
-            camera_sample_frame_counts[i, 0] = record[1]
-            camera_sample_frame_counts[i, 1] = record[0]
+            # camera_sample_frame_counts[i, 0] = record[1]
+            # camera_sample_frame_counts[i, 1] = record[0]
+            camera_sample_frame_counts[i, 0] = record[0]  # framecounts
+            camera_sample_frame_counts[i, 1] = i          # timestamps (dummy)
         return camera_sample_frame_counts
