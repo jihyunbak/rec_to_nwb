@@ -17,11 +17,13 @@ class CameraSampleFrameCountsExtractor:
         return merged_data
 
     def __get_all_hwframecount_files(self):
-        all_files = os.listdir(self.raw_data_path)
         hwsync_files = []
-        for file in all_files:
-            if 'videoTimeStamps.cameraHWFrameCount' in file:
-                hwsync_files.append(file)
+        all_dirs = os.listdir(self.raw_data_path)
+        for dir in all_dirs:
+            all_files = os.listdir(self.raw_data_path + '/' + dir)
+            for file in all_files:
+                if 'pos_cameraHWFrameCount.dat' in file:
+                    hwsync_files.append(dir + '/' + file)
         return hwsync_files
 
     @staticmethod

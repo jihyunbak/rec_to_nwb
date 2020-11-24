@@ -215,7 +215,8 @@ class OldNWBFileBuilder:
         self.header_device_originator = HeaderDeviceOriginator(self.header, self.metadata)
         self.probes_originator = ProbeOriginator(self.device_factory, self.device_injector, self.probes)
         self.camera_sample_frame_counts_originator = CameraSampleFrameCountsOriginator(
-            self.data_path + "/" + animal_name + "/raw/" + self.date + "/")
+            full_data_path + "/")
+            # self.data_path + "/" + animal_name + "/raw/" + self.date + "/")
         self.old_video_files_originator = OldVideoFilesOriginator(
             self.data_path + "/" + animal_name + "/raw/" + self.date + "/",
             self.video_path,
