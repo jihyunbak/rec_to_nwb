@@ -16,5 +16,8 @@ class OldFlAnalogExtractor:
         for analog_file in analog_files:
             analog_data = readTrodesExtractedDataFile(analog_files[analog_file])
             values = analog_data['data']
-            single_dataset_data[analog_data['id']] = values
+            # single_dataset_data[analog_data['id']] = values
+            # NOTE: 'id' field was missing for timestamps file;
+            # otherwise same as analog_file key
+            single_dataset_data[analog_file] = values
         return single_dataset_data
