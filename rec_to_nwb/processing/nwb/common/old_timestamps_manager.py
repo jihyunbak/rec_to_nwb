@@ -21,6 +21,17 @@ class OldTimestampManager(abc.ABC):
     def _get_timestamps(self, dataset_id):
         pass
 
+    def retrieve_real_timestamps(self, dataset_id):
+        timestamps_ids = self.read_timestamps_ids(dataset_id)
+        # continuous_time_dict = self.continuous_time_extractor.get_continuous_time_dict_file(
+        #     self.continuous_time_directories[dataset_id])
+        # return self.timestamp_converter.convert_timestamps(continuous_time_dict, timestamps_ids)
+        converted_timestamps = np.ndarray(shape=[len(timestamps_ids), ], dtype="float64")
+        for i, _ in enumerate(timestamps_ids):
+            value = float('nan')
+            converted_timestamps[i] = value
+        return converted_timestamps
+
     def read_timestamps_ids(self, dataset_id):
         return self._get_timestamps(dataset_id)
 
