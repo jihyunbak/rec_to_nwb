@@ -32,7 +32,8 @@ class DataManager(abc.ABC):
         return np.shape(self.directories)[0]
 
     def get_final_data_shape(self):
-        return self.number_of_rows_per_file * self.number_of_files_per_dataset, sum(self.file_lenghts_in_datasets)
+        # return self.number_of_rows_per_file * self.number_of_files_per_dataset, sum(self.file_lenghts_in_datasets)
+        return (sum(self.number_of_rows_per_file), sum(self.file_lenghts_in_datasets))
 
     def get_directories(self):
         return self.directories
