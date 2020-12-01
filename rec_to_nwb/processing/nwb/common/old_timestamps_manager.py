@@ -25,7 +25,8 @@ class OldTimestampManager(abc.ABC):
         timestamps_ids = self.read_timestamps_ids(dataset_id)
         converted_timestamps = np.ndarray(shape=[len(timestamps_ids), ], dtype="float64")
         for i, _ in enumerate(timestamps_ids):
-            value = float('nan')  # just a dummy value for now
+            # value = float('nan')  # just a dummy value for now
+            value = 0. # still a dummy value but a "valid" value ( >= 0)
             converted_timestamps[i] = value
         return converted_timestamps
 

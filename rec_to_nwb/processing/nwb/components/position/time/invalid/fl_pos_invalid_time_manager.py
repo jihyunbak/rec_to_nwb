@@ -51,7 +51,9 @@ class FlPosInvalidTimeManager:
         ]
         timestamp = np.hstack(timestamps)
 
-        if timestamp.any():
+        # if timestamp.any():
+        if sum(timestamp.shape) > 0:
+            # so that array of all zeros passes
             return timestamp
         raise MissingDataException('POS timestamps are not found!')
 

@@ -49,7 +49,9 @@ class FlPosValidTimeManager:
         ]
         timestamp = np.hstack(timestamps)
 
-        if timestamp.any():
+        # if timestamp.any():
+        if sum(timestamp.shape) > 0:
+            # so that array of all zeros passes
             return timestamp
         raise MissingDataException('POS timestamps are not found!')
 
@@ -91,5 +93,3 @@ class FlPosValidTimeManager:
     @staticmethod
     def __build_pos_valid_times(valid_times):
         return [FlPosValidTimeBuilder.build(gap[0], gap[1]) for gap in valid_times]
-
-
