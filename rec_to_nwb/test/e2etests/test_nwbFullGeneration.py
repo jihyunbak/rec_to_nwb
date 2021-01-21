@@ -17,9 +17,9 @@ class TestNwbFullGeneration(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.metadata = MetadataManager(
-            'C:/Users/wmery/PycharmProjects/rec_to_nwb/rec_to_nwb/test/test_data/KF2/raw/20170120/kibbles20170216_metadata.yml',
-            ['C:/Users/wmery/PycharmProjects/rec_to_nwb/rec_to_nwb/test/test_data/KF2/raw/20170120/64c-3s6mm6cm-20um-40um-sl.yml',
-             'C:/Users/wmery/PycharmProjects/rec_to_nwb/rec_to_nwb/test/test_data/KF2/raw/20170120/64c-4s6mm6cm-20um-40um-dl.yml'
+            'test_data/KF2/raw/20170120/KF2_20170120_metadata_test.yml',
+            ['test_data/KF2/raw/20170120/64c-3s6mm6cm-20um-40um-sl.yml',
+             'test_data/KF2/raw/20170120/64c-4s6mm6cm-20um-40um-dl.yml'
              ])
 
         cls.nwb_builder = NWBFileBuilder(
@@ -61,7 +61,8 @@ class TestNwbFullGeneration(unittest.TestCase):
             nwb_metadata=self.metadata,
             process_dio=True,
             process_mda=True,
-            process_analog=True
+            process_analog=True,
+            process_video=True
         )
 
     @should_raise(TypeError)
