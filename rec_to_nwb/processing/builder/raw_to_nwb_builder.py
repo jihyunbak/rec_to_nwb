@@ -196,13 +196,13 @@ class RawToNWBBuilder:
             nwb_builder = self.get_nwb_builder(date)
             content = nwb_builder.build()
             nwb_builder.write(content)
-            # self.append_to_nwb(
-            #     nwb_builder=nwb_builder,
-            #     process_mda_valid_time=process_mda_valid_time,
-            #     process_mda_invalid_time=process_mda_invalid_time,
-            #     process_pos_valid_time=process_pos_valid_time,
-            #     process_pos_invalid_time=process_pos_invalid_time
-            # )
+            self.append_to_nwb(
+                nwb_builder=nwb_builder,
+                process_mda_valid_time=process_mda_valid_time,
+                process_mda_invalid_time=process_mda_invalid_time,
+                process_pos_valid_time=process_pos_valid_time,
+                process_pos_invalid_time=process_pos_invalid_time
+            )
             
     def __build_old_nwb_file(self, process_mda_valid_time=True, process_mda_invalid_time=True,
                process_pos_valid_time=True, process_pos_invalid_time=True):
