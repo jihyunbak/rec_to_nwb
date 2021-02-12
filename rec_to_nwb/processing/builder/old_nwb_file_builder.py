@@ -216,7 +216,7 @@ class OldNWBFileBuilder:
         self.probes_originator = ProbeOriginator(self.device_factory, self.device_injector, self.probes)
         self.camera_sample_frame_counts_originator = CameraSampleFrameCountsOriginator(
             self.data_path + "/" + animal_name + "/raw/" + self.date + "/")
-        self.old_video_files_originator = OldVideoFilesOriginator(
+        self.video_files_originator = OldVideoFilesOriginator(
             self.data_path + "/" + animal_name + "/raw/" + self.date + "/",
             self.video_path,
             self.metadata["associated_video_files"],
@@ -232,12 +232,12 @@ class OldNWBFileBuilder:
             self.mda_originator = MdaOriginator(self.datasets, self.header, self.metadata)
 
         if self.process_dio:
-            self.old_dio_originator = OldDioOriginator(self.metadata, self.datasets)
+            self.dio_originator = OldDioOriginator(self.metadata, self.datasets)
 
         if self.process_analog:
-            self.old_analog_originator = OldAnalogOriginator(self.datasets, self.metadata)
+            self.analog_originator = OldAnalogOriginator(self.datasets, self.metadata)
 
-        self.old_position_originator = OldPositionOriginator(self.datasets, self.metadata,
+        self.position_originator = OldPositionOriginator(self.datasets, self.metadata,
                                                       self.dataset_names, self.process_pos_timestamps)
 
     def __extract_datasets(self, animal_name, date):
@@ -278,7 +278,7 @@ class OldNWBFileBuilder:
         if 'associated_files' in self.metadata:
             self.associated_files_originator.make(nwb_content)
 
-        self.old_position_originator.make(nwb_content)
+        self.position_originator.make(nwb_content)
 
         valid_map_dict = self.__build_corrupted_data_manager()
 
@@ -294,7 +294,7 @@ class OldNWBFileBuilder:
 
         self.camera_device_originator.make(nwb_content)
 
-        self.old_video_files_originator.make(nwb_content)
+        self.video_files_originator.make(nwb_content)
 
         electrode_groups = self.electrode_group_originator.make(
             nwb_content, probes, valid_map_dict['electrode_groups']
@@ -315,10 +315,10 @@ class OldNWBFileBuilder:
         self.camera_sample_frame_counts_originator.make(nwb_content)
 
         if self.process_dio:
-            self.old_dio_originator.make(nwb_content)
+            self.dio_originator.make(nwb_content)
 
         if self.process_analog:
-            self.old_analog_originator.make(nwb_content)
+            self.analog_originator.make(nwb_content)
 
         if self.process_mda:
             self.mda_originator.make(nwb_content)

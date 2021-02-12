@@ -188,12 +188,13 @@ class NWBFileBuilder:
         self.electrode_group_originator = ElectrodeGroupOriginator(self.metadata)
         self.electrodes_originator = ElectrodesOriginator(self.probes, self.metadata)
 
-        self.session_time_extractor = SessionTimeExtractor(
+        session_time_extractor = SessionTimeExtractor(
             self.datasets,
             self.animal_name,
             self.date,
             self.dataset_names
         )
+        self.session_start_time = session_time_extractor.get_session_start_time()
 
         self.mda_valid_time_originator = MdaValidTimeOriginator(self.header, self.metadata)
         self.mda_invalid_time_originator = MdaInvalidTimeOriginator(self.header, self.metadata)
@@ -261,7 +262,7 @@ class NWBFileBuilder:
             experimenter=self.metadata['experimenter name'],
             lab=self.metadata['lab'],
             institution=self.metadata['institution'],
-            session_start_time=self.session_time_extractor.get_session_start_time(),
+            session_start_time=self.session_start_time,
             timestamps_reference_time=datetime.fromtimestamp(0, pytz.utc),
             identifier=str(uuid.uuid1()),
             session_id=self.metadata['session_id'],
@@ -279,7 +280,6 @@ class NWBFileBuilder:
 
         self.processing_module_originator.make(nwb_content)
 
- 
         if 'associated_files' in self.metadata:
             self.associated_files_originator.make(nwb_content)
 
