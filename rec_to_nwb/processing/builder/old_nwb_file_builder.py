@@ -83,7 +83,6 @@ class OldNWBFileBuilder:
             data_path: str,
             animal_name: str,
             date: str,
-            session_start_time,
             nwb_metadata: MetadataManager,
             process_dio: bool = True,
             process_mda: bool = True,
@@ -92,7 +91,9 @@ class OldNWBFileBuilder:
             preprocessing_path: str = '',
             video_path: str = '',
             output_file: str = 'output.nwb',
-            reconfig_header: str = ''
+            reconfig_header: str = '',
+            is_old_dataset: bool = True,
+            session_start_time = None,
     ):
 
         logger.info('NWBFileBuilder initialization')
@@ -135,6 +136,7 @@ class OldNWBFileBuilder:
             self.preprocessing_path = preprocessing_path
         self.output_file = output_file
         self.video_path = video_path
+        self.is_old_dataset = is_old_dataset
         self.link_to_notes = self.metadata.get('link to notes', None)
         data_types_for_scanning = {'pos': True,
                                    'time': True,

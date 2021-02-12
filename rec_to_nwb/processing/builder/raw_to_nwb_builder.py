@@ -11,7 +11,7 @@ from rec_to_nwb.processing.metadata.metadata_manager import MetadataManager
 from rec_to_nwb.processing.builder.nwb_file_builder import NWBFileBuilder
 from rec_to_nwb.processing.tools.beartype.beartype import beartype
 from rec_to_nwb.processing.validation.not_empty_validator import NotEmptyValidator
-from rec_to_nwb.processing.builder.old_nwb_file_builder import OldNWBFileBuilder
+# from rec_to_nwb.processing.builder.old_nwb_file_builder import OldNWBFileBuilder
 from rec_to_nwb.processing.validation.validation_registrator import ValidationRegistrator
 
 path = os.path.dirname(os.path.abspath(__file__))
@@ -32,7 +32,7 @@ _DEFAULT_TIME_EXPORT_ARGS = ()
 
 _DEFAULT_TRODES_REC_EXPORT_ARGS = ()
 
-# for OldNWBFileBuilder
+# for old dataset only (no PTP)
 _DEFAULT_SESSION_START_TIME = datetime.fromtimestamp(0, pytz.utc) # dummy value for now
 
 
@@ -235,16 +235,15 @@ class RawToNWBBuilder:
             process_analog=self.extract_analog,
             preprocessing_path=self.preprocessing_path,
             video_path=self.video_path,
-            reconfig_header=self.__get_header_path()
+            reconfig_header=self.__get_header_path(),
             #reconfig_header=self.__is_rec_config_valid()
         )
         
     def get_old_nwb_builder(self, date):
-        return OldNWBFileBuilder(
+        return NWBFileBuilder(
             data_path=self.data_path,
             animal_name=self.animal_name,
             date=date,
-            session_start_time=_DEFAULT_SESSION_START_TIME,
             nwb_metadata=self.nwb_metadata,
             output_file=self.output_path + self.animal_name + date + ".nwb",
             process_mda=self.extract_mda,
@@ -252,8 +251,10 @@ class RawToNWBBuilder:
             process_analog=self.extract_analog,
             preprocessing_path=self.preprocessing_path,
             video_path=self.video_path,
-            reconfig_header=self.__get_header_path()
+            reconfig_header=self.__get_header_path(),
             #reconfig_header=self.__is_rec_config_valid()
+            is_old_dataset=True,
+            session_start_time=_DEFAULT_SESSION_START_TIME,
         )
 
     def __preprocess_data(self):
