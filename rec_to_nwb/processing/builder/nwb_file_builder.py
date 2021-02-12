@@ -22,10 +22,6 @@ from rec_to_nwb.processing.builder.originators.header_device_originator import H
 from rec_to_nwb.processing.builder.originators.mda_invalid_time_originator import MdaInvalidTimeOriginator
 from rec_to_nwb.processing.builder.originators.mda_originator import MdaOriginator
 from rec_to_nwb.processing.builder.originators.mda_valid_time_originator import MdaValidTimeOriginator
-from rec_to_nwb.processing.builder.originators.old_analog_originator import OldAnalogOriginator
-from rec_to_nwb.processing.builder.originators.old_dio_originator import OldDioOriginator
-from rec_to_nwb.processing.builder.originators.old_position_originator import OldPositionOriginator
-from rec_to_nwb.processing.builder.originators.old_video_files_originator import OldVideoFilesOriginator
 from rec_to_nwb.processing.builder.originators.pos_invalid_originator import PosInvalidTimeOriginator
 from rec_to_nwb.processing.builder.originators.pos_valid_time_originator import PosValidTimeOriginator
 from rec_to_nwb.processing.builder.originators.position_originator import PositionOriginator
@@ -55,6 +51,12 @@ from rec_to_nwb.processing.validation.path_validator import PathValidator
 from rec_to_nwb.processing.validation.preprocessing_validator import PreprocessingValidator
 from rec_to_nwb.processing.validation.task_validator import TaskValidator
 from rec_to_nwb.processing.validation.validation_registrator import ValidationRegistrator
+
+# processing old dataset
+from rec_to_nwb.processing.builder.originators.old_analog_originator import OldAnalogOriginator
+from rec_to_nwb.processing.builder.originators.old_dio_originator import OldDioOriginator
+from rec_to_nwb.processing.builder.originators.old_position_originator import OldPositionOriginator
+from rec_to_nwb.processing.builder.originators.old_video_files_originator import OldVideoFilesOriginator
 
 path = os.path.dirname(os.path.abspath(__file__))
 logging.config.fileConfig(fname=str(path) + '/../../logging.conf', disable_existing_loggers=False)
