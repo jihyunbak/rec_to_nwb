@@ -24,10 +24,11 @@ class OldPosTimestampManager(TimestampManager):
         return position.time.to_numpy(dtype='int64')
 
     # override for old dataset only
-    def retrieve_real_timestamps(self, dataset_id):
-        timestamps_ids = self.read_timestamps_ids(dataset_id)
-        converted_timestamps = np.ndarray(shape=[len(timestamps_ids), ], dtype="float64")
-        for i, _ in enumerate(timestamps_ids):
-            value = float('nan')  # just a dummy value for now
-            converted_timestamps[i] = value
-        return converted_timestamps
+    # --- let's test not overriding ---
+    # def retrieve_real_timestamps(self, dataset_id):
+    #     timestamps_ids = self.read_timestamps_ids(dataset_id)
+    #     converted_timestamps = np.ndarray(shape=[len(timestamps_ids), ], dtype="float64")
+    #     for i, _ in enumerate(timestamps_ids):
+    #         value = float('nan')  # just a dummy value for now
+    #         converted_timestamps[i] = value
+    #     return converted_timestamps
