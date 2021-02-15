@@ -197,7 +197,7 @@ class NWBFileBuilder:
         self.electrode_group_originator = ElectrodeGroupOriginator(self.metadata)
         self.electrodes_originator = ElectrodesOriginator(self.probes, self.metadata)
 
-        if self.is_old_dataset
+        if self.is_old_dataset:
             if not session_start_time:
                 raise ValueError('session_start_time is required for old dataset.')
             self.session_start_time = session_start_time
