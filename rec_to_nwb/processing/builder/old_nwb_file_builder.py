@@ -18,10 +18,10 @@ from rec_to_nwb.processing.builder.originators.electrodes_originator import Elec
 from rec_to_nwb.processing.builder.originators.epochs_originator import EpochsOriginator
 from rec_to_nwb.processing.builder.originators.header_device_originator import HeaderDeviceOriginator
 from rec_to_nwb.processing.builder.originators.mda_invalid_time_originator import MdaInvalidTimeOriginator
+from rec_to_nwb.processing.builder.originators.mda_originator import MdaOriginator
 from rec_to_nwb.processing.builder.originators.mda_valid_time_originator import MdaValidTimeOriginator
 from rec_to_nwb.processing.builder.originators.old_analog_originator import OldAnalogOriginator
 from rec_to_nwb.processing.builder.originators.old_dio_originator import OldDioOriginator
-from rec_to_nwb.processing.builder.originators.old_mda_originator import OldMdaOriginator
 from rec_to_nwb.processing.builder.originators.old_position_originator import OldPositionOriginator
 from rec_to_nwb.processing.builder.originators.old_video_files_originator import OldVideoFilesOriginator
 from rec_to_nwb.processing.builder.originators.pos_invalid_originator import PosInvalidTimeOriginator
@@ -229,7 +229,7 @@ class OldNWBFileBuilder:
         )
 
         if self.process_mda:
-            self.old_mda_originator = OldMdaOriginator(self.datasets, self.header, self.metadata)
+            self.mda_originator = MdaOriginator(self.datasets, self.header, self.metadata)
 
         if self.process_dio:
             self.old_dio_originator = OldDioOriginator(self.metadata, self.datasets)
@@ -321,7 +321,7 @@ class OldNWBFileBuilder:
             self.old_analog_originator.make(nwb_content)
 
         if self.process_mda:
-            self.old_mda_originator.make(nwb_content)
+            self.mda_originator.make(nwb_content)
 
         return nwb_content
 
