@@ -4,25 +4,8 @@ rec_to_nwb is a python conda package for converting SpikeGadgets rec files to NW
 It converts experiment data from `/raw` or `/preprocessing` folder to `.nwb` file. It utilizes rec_to_binaries package for preprocessing phase.<br>
 <https://github.com/LorenFrankLab/rec_to_binaries><br>
 
-# Prerequisites
-## For users
-1. Install Spike Gadgets <br>
-   <https://bitbucket.org/mkarlsso/trodes/downloads/>
-2. Add SpikeGadgets to path. <br>
-   If Spike Gadgets is in default location: <br>
-   ```bash
-   export PATH="$HOME/SpikeGadgets/:$PATH"
-   ```
-3. Download miniconda from <br>
-   <https://docs.conda.io/en/latest/miniconda.html> <br>
-4. Install rec_to_nwb package:
-   ```bash
-   conda install -c conda-forge -c novelakrk rec_to_nwb
-   ```
-5. Install Jupyter notebook
-   ```bash
-   pip install jupyter notebook
-   ```
+# Instructions:
+Currently we suggest following the instructions to install https://github.com/LorenFrankLab/franklabnwb, as that includes additional files that are helpful, but you can install this using the instructions below.
 
 ## For developers
 1. Install Spike Gadgets <br>
@@ -32,11 +15,11 @@ It converts experiment data from `/raw` or `/preprocessing` folder to `.nwb` fil
    ```bash
    export PATH="$HOME/SpikeGadgets/:$PATH"
    ```
-3. Download miniconda from<br>
-   <https://docs.conda.io/en/latest/miniconda.html><br>
+3. Install anaconda or miniconda if you haven't already.
+
 4. clone repository
    ```bash
-   git clone https://github.com/NovelaNeuro/rec_to_nwb.git
+   git clone https://github.com/LorenFrankLab/rec_to_nwb.git
 
    cd rec_to_nwb/rec_to_nwb
    ```
@@ -44,11 +27,16 @@ It converts experiment data from `/raw` or `/preprocessing` folder to `.nwb` fil
    ```bash
    conda env create -f environment.yml
    ```
-6. jupyter notebook installation
+6. Install rec_to_nwb
+   ```bash
+   cd ..
+   python setup.py install
+   ```
+7. jupyter notebook installation
    ```bash
    pip install jupyter notebook
    ```
-7. Documentation can be viewed at <br>
+8. Documentation can be viewed at <br>
     <https://novelaneuro.github.io/rec_to_nwb-docs/>
 
 # How to use it
