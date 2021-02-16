@@ -25,15 +25,6 @@ class OldPosTimestampManager(TimestampManager):
 
     # override for old dataset only
     # --- let's test not overriding ---
-<<<<<<< Updated upstream
-    # def retrieve_real_timestamps(self, dataset_id):
-    #     timestamps_ids = self.read_timestamps_ids(dataset_id)
-    #     converted_timestamps = np.ndarray(shape=[len(timestamps_ids), ], dtype="float64")
-    #     for i, _ in enumerate(timestamps_ids):
-    #         value = float('nan')  # just a dummy value for now
-    #         converted_timestamps[i] = value
-    #     return converted_timestamps
-=======
     # note: continuous_time_directories=None gives rise to an error, 
     # when retrieve_real_timestamps is called
     # and self.continuous_time_directories[dataset_id])
@@ -45,4 +36,3 @@ class OldPosTimestampManager(TimestampManager):
             value = float('nan')  # just a dummy value for now
             converted_timestamps[i] = value
         return converted_timestamps
->>>>>>> Stashed changes
