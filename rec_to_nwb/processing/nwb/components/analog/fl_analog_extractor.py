@@ -23,10 +23,10 @@ class FlAnalogExtractor:
                 single_dataset_data[analog_data['id']] = values
             else:
                 if continuous_time_file:
-                    single_dataset_data[analog_file] = FlAnalogExtractor._extract_analog_file(...
+                    single_dataset_data[analog_file] = FlAnalogExtractor._extract_analog_file(
                                         analog_files[analog_file], continuous_time_file)
                 else:
-                    single_dataset_data[analog_file] = FlAnalogExtractor._extract_analog_file_old(...
+                    single_dataset_data[analog_file] = FlAnalogExtractor._extract_analog_file_old(
                                         analog_files[analog_file])
         return single_dataset_data
 
