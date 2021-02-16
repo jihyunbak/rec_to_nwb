@@ -2,7 +2,7 @@ import numpy as np
 
 from rec_to_nwb.processing.nwb.components.analog.fl_analog import FlAnalog
 from rec_to_nwb.processing.nwb.components.analog.old_fl_analog_builder import OldFlAnalogBuilder
-from rec_to_nwb.processing.nwb.components.analog.old_fl_analog_extractor import OldFlAnalogExtractor
+from rec_to_nwb.processing.nwb.components.analog.fl_analog_extractor import FlAnalogExtractor
 from rec_to_nwb.processing.tools.beartype.beartype import beartype
 from rec_to_nwb.processing.tools.validate_parameters import validate_parameters_equal_length
 
@@ -23,8 +23,8 @@ class OldFlAnalogManager:
         number_of_datasets = len(self.analog_files)
         for i in range(number_of_datasets):
             all_analog_data.append(
-                OldFlAnalogExtractor.extract_analog_for_single_dataset(
-                    self.analog_files[i]
+                FlAnalogExtractor.extract_analog_for_single_dataset(
+                    self.analog_files[i],
                 )
             )
         merged_epochs = self.__merge_epochs(all_analog_data)
