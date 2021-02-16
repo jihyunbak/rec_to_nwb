@@ -1,6 +1,7 @@
 import logging.config
 import os
 
+import numpy as np
 import pandas as pd
 from rec_to_binaries.read_binaries import readTrodesExtractedDataFile
 
