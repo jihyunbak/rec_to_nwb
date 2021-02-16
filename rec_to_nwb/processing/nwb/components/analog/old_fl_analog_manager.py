@@ -1,7 +1,7 @@
 import numpy as np
 
 from rec_to_nwb.processing.nwb.components.analog.fl_analog import FlAnalog
-from rec_to_nwb.processing.nwb.components.analog.old_fl_analog_builder import OldFlAnalogBuilder
+from rec_to_nwb.processing.nwb.components.analog.fl_analog_builder import FlAnalogBuilder
 from rec_to_nwb.processing.nwb.components.analog.fl_analog_extractor import FlAnalogExtractor
 from rec_to_nwb.processing.tools.beartype.beartype import beartype
 from rec_to_nwb.processing.tools.validate_parameters import validate_parameters_equal_length
@@ -31,8 +31,8 @@ class OldFlAnalogManager:
         description = self.__merge_row_description(all_analog_data)
         analog_data = self.__merge_analog_sensors(merged_epochs)
 
-        timestamps = []
-        return OldFlAnalogBuilder.build(analog_data, timestamps, description)
+        timestamps = self.__get_timestamps(merged_epochs)
+        return FlAnalogBuilder.build(analog_data, timestamps, description)
 
     @staticmethod
     def __merge_epochs(data_from_multiple_datasets):
