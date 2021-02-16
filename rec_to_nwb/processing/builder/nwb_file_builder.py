@@ -52,6 +52,12 @@ from rec_to_nwb.processing.validation.preprocessing_validator import Preprocessi
 from rec_to_nwb.processing.validation.task_validator import TaskValidator
 from rec_to_nwb.processing.validation.validation_registrator import ValidationRegistrator
 
+# processing old dataset
+from rec_to_nwb.processing.builder.originators.old_analog_originator import OldAnalogOriginator
+from rec_to_nwb.processing.builder.originators.old_dio_originator import OldDioOriginator
+from rec_to_nwb.processing.builder.originators.old_position_originator import OldPositionOriginator
+from rec_to_nwb.processing.builder.originators.old_video_files_originator import OldVideoFilesOriginator
+
 path = os.path.dirname(os.path.abspath(__file__))
 logging.config.fileConfig(fname=str(path) + '/../../logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger(__name__)
@@ -91,7 +97,9 @@ class NWBFileBuilder:
             preprocessing_path: str = '',
             video_path: str = '',
             output_file: str = 'output.nwb',
-            reconfig_header: str = ''
+            reconfig_header: str = '',
+            is_old_dataset: bool = False,
+            session_start_time = None,
     ):
 
         logger.info('NWBFileBuilder initialization')
@@ -134,6 +142,7 @@ class NWBFileBuilder:
             self.preprocessing_path = preprocessing_path
         self.output_file = output_file
         self.video_path = video_path
+        self.is_old_dataset = is_old_dataset
         self.link_to_notes = self.metadata.get('link to notes', None)
         data_types_for_scanning = {'pos': True,
                                    'time': True,
@@ -188,12 +197,18 @@ class NWBFileBuilder:
         self.electrode_group_originator = ElectrodeGroupOriginator(self.metadata)
         self.electrodes_originator = ElectrodesOriginator(self.probes, self.metadata)
 
-        self.session_time_extractor = SessionTimeExtractor(
-            self.datasets,
-            self.animal_name,
-            self.date,
-            self.dataset_names
-        )
+        if self.is_old_dataset:
+            if not session_start_time:
+                raise ValueError('session_start_time is required for old dataset.')
+            self.session_start_time = session_start_time
+        else:
+            session_time_extractor = SessionTimeExtractor(
+                self.datasets,
+                self.animal_name,
+                self.date,
+                self.dataset_names
+            )
+            self.session_start_time = session_time_extractor.get_session_start_time()
 
         self.mda_valid_time_originator = MdaValidTimeOriginator(self.header, self.metadata)
         self.mda_invalid_time_originator = MdaInvalidTimeOriginator(self.header, self.metadata)
@@ -220,11 +235,18 @@ class NWBFileBuilder:
         self.probes_originator = ProbeOriginator(self.device_factory, self.device_injector, self.probes)
         self.camera_sample_frame_counts_originator = CameraSampleFrameCountsOriginator(
             self.data_path + "/" + animal_name + "/raw/" + self.date + "/")
-        self.video_files_originator = VideoFilesOriginator(
-            self.data_path + "/" + animal_name + "/raw/" + self.date + "/",
-            self.video_path,
-            self.metadata["associated_video_files"],
-        )
+        if self.is_old_dataset:
+            self.video_files_originator = OldVideoFilesOriginator(
+                self.data_path + "/" + animal_name + "/raw/" + self.date + "/",
+                self.video_path,
+                self.metadata["associated_video_files"],
+            )
+        else:
+            self.video_files_originator = VideoFilesOriginator(
+                self.data_path + "/" + animal_name + "/raw/" + self.date + "/",
+                self.video_path,
+                self.metadata["associated_video_files"],
+            )
 
         self.data_acq_device_originator = DataAcqDeviceOriginator(
             device_factory=self.device_factory,
@@ -236,13 +258,23 @@ class NWBFileBuilder:
             self.mda_originator = MdaOriginator(self.datasets, self.header, self.metadata)
 
         if self.process_dio:
-            self.dio_originator = DioOriginator(self.metadata, self.datasets)
+            if self.is_old_dataset:
+                self.dio_originator = OldDioOriginator(self.metadata, self.datasets)
+            else:
+                self.dio_originator = DioOriginator(self.metadata, self.datasets)
 
         if self.process_analog:
-            self.analog_originator = AnalogOriginator(self.datasets, self.metadata)
+            if self.is_old_dataset:
+                self.analog_originator = OldAnalogOriginator(self.datasets, self.metadata)
+            else:
+                self.analog_originator = AnalogOriginator(self.datasets, self.metadata)
 
-        self.position_originator = PositionOriginator(self.datasets, self.metadata,
-                                                      self.dataset_names, self.process_pos_timestamps)
+        if self.is_old_dataset:
+            self.position_originator = OldPositionOriginator(self.datasets, self.metadata,
+                                                          self.dataset_names, self.process_pos_timestamps)
+        else:
+            self.position_originator = PositionOriginator(self.datasets, self.metadata,
+                                                          self.dataset_names, self.process_pos_timestamps)
 
     def __extract_datasets(self, animal_name, date):
         self.data_scanner.extract_data_from_date_folder(date)
@@ -261,7 +293,7 @@ class NWBFileBuilder:
             experimenter=self.metadata['experimenter name'],
             lab=self.metadata['lab'],
             institution=self.metadata['institution'],
-            session_start_time=self.session_time_extractor.get_session_start_time(),
+            session_start_time=self.session_start_time,
             timestamps_reference_time=datetime.fromtimestamp(0, pytz.utc),
             identifier=str(uuid.uuid1()),
             session_id=self.metadata['session_id'],
@@ -279,7 +311,6 @@ class NWBFileBuilder:
 
         self.processing_module_originator.make(nwb_content)
 
- 
         if 'associated_files' in self.metadata:
             self.associated_files_originator.make(nwb_content)
 
