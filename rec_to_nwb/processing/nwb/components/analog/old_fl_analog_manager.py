@@ -10,10 +10,12 @@ from rec_to_nwb.processing.tools.validate_parameters import validate_parameters_
 class OldFlAnalogManager:
 
     @beartype
-    def __init__(self, analog_files: list):
-        validate_parameters_equal_length(__name__, analog_files)
+    def __init__(self, analog_files: list, continuous_time_files: list):
+        ''' continuous_time_files is a list of None's for old dataset '''
+        validate_parameters_equal_length(__name__, analog_files, continuous_time_files)
 
         self.analog_files = analog_files
+        self.continuous_time_files = continuous_time_files
 
     @beartype
     def get_analog(self) -> FlAnalog:
@@ -25,6 +27,7 @@ class OldFlAnalogManager:
             all_analog_data.append(
                 FlAnalogExtractor.extract_analog_for_single_dataset(
                     self.analog_files[i],
+                    self.continuous_time_files[i]
                 )
             )
         merged_epochs = self.__merge_epochs(all_analog_data)
@@ -57,3 +60,7 @@ class OldFlAnalogManager:
         merged_analog_sensors = np.array(analog_sensors, np.int32)
         transposed_analog_data = np.ndarray.transpose(merged_analog_sensors)
         return transposed_analog_data
+
+    def __get_timestamps(self, merged_epochs):
+        # for old dataset (check!)
+        return []

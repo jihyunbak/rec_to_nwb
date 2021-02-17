@@ -32,7 +32,9 @@ class FlAnalogManager:
         merged_epochs = self.__merge_epochs(all_analog_data)
         description = self.__merge_row_description(all_analog_data)
         analog_data = self.__merge_analog_sensors(merged_epochs)
-        return FlAnalogBuilder.build(analog_data, self.__get_timestamps(merged_epochs), description)
+
+        timestamps = self.__get_timestamps(merged_epochs)
+        return FlAnalogBuilder.build(analog_data, timestamps, description)
 
     @staticmethod
     def __merge_epochs(data_from_multiple_datasets):
@@ -52,7 +54,8 @@ class FlAnalogManager:
 
     @classmethod
     def __merge_analog_sensors(cls, merged_epochs):
-        analog_sensors = [merged_epochs[analog_sensor] for analog_sensor in merged_epochs.keys() if 'timestamp' not in analog_sensor]
+        analog_sensors = [merged_epochs[analog_sensor] for analog_sensor in merged_epochs.keys() if
+                          'timestamp' not in analog_sensor]
         merged_analog_sensors = np.array(analog_sensors, np.int32)
         transposed_analog_data = np.ndarray.transpose(merged_analog_sensors)
         return transposed_analog_data
